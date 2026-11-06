@@ -51,11 +51,35 @@ function QuoteChart({ quote }: { quote: StockQuote }) {
 }
 
 function StockLoadingBar() {
+  const [value, setValue] = useState(6);
+
+  useEffect(() => {
+    const started = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      const next = Math.min(92, Math.round(6 + (1 - Math.exp(-(now - started) / 1400)) * 86));
+      setValue(next);
+      frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
-    <div className="stock-load" role="progressbar" aria-label="Loading stock quotes">
-      <span className="stock-load-fill">
-        <span className="stock-load-head" />
-      </span>
+    <div className="stock-load-row">
+      <div
+        className="stock-load"
+        role="progressbar"
+        aria-valuenow={value}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Loading stock quotes"
+      >
+        <span className="stock-load-fill" style={{ width: `calc((100% - 4px) * ${value / 100})` }}>
+          <span className="stock-load-head" />
+        </span>
+      </div>
+      <span className="stock-load-value">{value}%</span>
     </div>
   );
 }
