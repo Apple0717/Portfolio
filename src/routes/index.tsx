@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "William L. Todd — Luxury Portfolio" },
+      { title: "WLT" },
       {
         name: "description",
         content: "William L. Todd's companies, work history, and the platforms behind each role.",
       },
-      { property: "og:title", content: "William L. Todd — Luxury Portfolio" },
+      { property: "og:title", content: "WLT" },
     ],
   }),
   component: HomePage,

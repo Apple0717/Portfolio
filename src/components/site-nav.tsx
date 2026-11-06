@@ -106,9 +106,11 @@ export function SiteNav() {
 
 export function SiteFooter() {
   return (
-    <footer className="lux-fade mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-10 text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row md:px-8">
-      <span>© 2026 William L. Todd</span>
-      <span>Connecting the world from California</span>
+    <footer className="lux-fade mt-auto w-full">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row md:px-8">
+        <span>© 2026 William L. Todd</span>
+        <span>Connecting the world from California</span>
+      </div>
     </footer>
   );
 }

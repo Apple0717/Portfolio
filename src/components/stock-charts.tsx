@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CHART_RANGES, getStockQuotes, type ChartRange, type StockPoint, type StockQuote } from "@/lib/market";
 
 type Feed = Awaited<ReturnType<typeof getStockQuotes>>;
@@ -50,13 +50,25 @@ function QuoteChart({ quote }: { quote: StockQuote }) {
   );
 }
 
+function StockLoadingBar() {
+  return (
+    <div className="stock-load" role="progressbar" aria-label="Loading stock quotes">
+      <span className="stock-load-fill">
+        <span className="stock-load-head" />
+      </span>
+    </div>
+  );
+}
+
 function QuoteCard({
   quote,
   range,
+  loading,
   onRange,
 }: {
   quote: StockQuote;
   range: ChartRange;
+  loading: boolean;
   onRange: (range: ChartRange) => void;
 }) {
   const color = tone(quote.direction);
@@ -68,7 +80,15 @@ function QuoteCard({
       <p className="mt-1 text-sm font-medium" style={{ color }}>
         {quote.changeText ? `${quote.changeText} (${quote.percentText}) ${quote.periodLabel}` : "Quote unavailable"}
       </p>
-      {quote.error ? <p className="mt-8 text-sm text-neutral-500">{quote.error}</p> : <QuoteChart quote={quote} />}
+      {loading ? (
+        <div className="grid min-h-52 place-items-center">
+          <StockLoadingBar />
+        </div>
+      ) : quote.error ? (
+        <p className="mt-8 text-sm text-neutral-500">{quote.error}</p>
+      ) : (
+        <QuoteChart quote={quote} />
+      )}
       <div className="mt-1 flex items-end justify-between gap-1">
         {CHART_RANGES.map((item) => {
           const selected = item === range;
@@ -94,15 +114,23 @@ function QuoteCard({
 export function StockBoard() {
   const [ranges, setRanges] = useState<RangeMap>({ BTCS: "1D", UPWK: "1D" });
   const [feed, setFeed] = useState<Feed | null>(null);
+  const [loadingSymbols, setLoadingSymbols] = useState<Array<keyof RangeMap>>(["BTCS", "UPWK"]);
   const [error, setError] = useState("");
+  const previousRanges = useRef<RangeMap | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     let pulling = false;
+    const previous = previousRanges.current;
+    const importing = (Object.keys(ranges) as Array<keyof RangeMap>).filter(
+      (symbol) => !previous || previous[symbol] !== ranges[symbol],
+    );
+    previousRanges.current = ranges;
 
-    const pull = async () => {
+    const pull = async (showBar: boolean) => {
       if (pulling) return;
       pulling = true;
+      if (showBar) setLoadingSymbols(importing);
       try {
         const next = await getStockQuotes({ data: { ranges } });
         if (cancelled) return;
@@ -113,11 +141,12 @@ export function StockBoard() {
         setError(cause instanceof Error ? cause.message : "Live quotes are unavailable.");
       } finally {
         pulling = false;
+        if (!cancelled && showBar) setLoadingSymbols([]);
       }
     };
 
-    void pull();
-    const timer = window.setInterval(() => void pull(), 5 * 60 * 1000);
+    void pull(true);
+    const timer = window.setInterval(() => void pull(false), 5 * 60 * 1000);
     return () => {
       cancelled = true;
       window.clearInterval(timer);
@@ -133,13 +162,15 @@ export function StockBoard() {
               <QuoteCard
                 key={quote.symbol}
                 quote={quote}
+                loading={loadingSymbols.includes(quote.symbol as keyof RangeMap)}
                 range={ranges[quote.symbol as keyof RangeMap] ?? quote.range}
                 onRange={(range) => setRanges((current) => ({ ...current, [quote.symbol]: range }))}
               />
             ))
           : ["Bitcoin Stocks Inc", "Upwork Stocks Inc"].map((title) => (
-              <article key={title} className="quote-card grid min-h-80 place-items-center px-4 py-6">
-                <p className="text-sm text-neutral-500">Loading {title}…</p>
+              <article key={title} className="quote-card grid min-h-80 place-items-center gap-8 px-4 py-6">
+                <h2 className="font-sans text-2xl font-semibold tracking-tight">{title}</h2>
+                <StockLoadingBar />
               </article>
             ))}
       </div>

@@ -93,7 +93,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Outfit:wght@300;400;500;600&display=swap" },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
     ],
   }),
   shellComponent: RootShell,
@@ -123,10 +124,14 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ThemeProvider>
-          <SiteNav />
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-          <SiteFooter />
+          <div className="flex min-h-screen flex-col">
+            <SiteNav />
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <div className="flex-1">
+              <Outlet />
+            </div>
+            <SiteFooter />
+          </div>
         </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
