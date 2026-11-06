@@ -44,12 +44,13 @@ function LoginPage() {
         </p>
       </Reveal>
       <Reveal delay={140} className="lux-panel p-6 md:p-9">
-        <form onSubmit={onSubmit} className="space-y-5">
+        <form onSubmit={onSubmit} autoComplete="off" className="space-y-5">
           <label className="block text-xs uppercase tracking-[0.22em] text-muted-foreground">
             Email
             <input
               type="email"
-              autoComplete="email"
+              name="studio-email"
+              autoComplete="off"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               className="lux-input mt-2"
@@ -60,7 +61,8 @@ function LoginPage() {
             Password
             <input
               type="password"
-              autoComplete="current-password"
+              name="studio-password"
+              autoComplete="new-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="lux-input mt-2"

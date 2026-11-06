@@ -23,14 +23,15 @@ export const experience: Experience[] = [
   {
     id: "rturner",
     role: "Full Stack Engineer",
-    company: "RTurner Consulting, LLC",
+    company: "rTurner consulting LLC",
     period: "07/2026 – 10/2026",
     address: "P.O. Box 1058, Taylorsville, KY 40071",
     platforms: ["Azure", "QuickBooks"],
     points: [
-      "Built an Azure platform managing menu & nutrition info for United School Districts.",
-      "Built a best-candidate suggestion system for menu bidding.",
-      "Implemented invoice management with the QuickBooks API.",
+      "Built a legacy platform on Azure that manages menu and nutrition information for United School Districts.",
+      "Built a best-candidate suggestion system that lets small companies and shops bid on the best-matching menus.",
+      "Implemented invoice management using the QuickBooks API.",
+      "Worked directly with stakeholders to turn business requirements into scalable, maintainable solutions, and coordinated with distributed engineering teams to ship enterprise-grade software.",
     ],
   },
   {
@@ -41,9 +42,11 @@ export const experience: Experience[] = [
     address: "Liberty Lake, Washington",
     platforms: ["Flutter", "Firebase", "OpenAI", "Replit"],
     points: [
-      "Built the iOS sermon app end to end with Flutter + Firebase.",
-      "Integrated OpenAI to generate sermon content.",
-      "Made it responsive for mobile and web via Replit.",
+      "Founded Shepherdspath AI and built its iOS sermon app end to end as the sole mobile developer, using Flutter for the client and Firebase for the backend.",
+      "Integrated the OpenAI API to generate sermon content, giving pastors an AI assistant for drafting and organizing their messages.",
+      "Designed a premium, polished interface with custom animations, smooth screen transitions, and a fully themed dark mode.",
+      "Migrated the project to a responsive layout using Replit, so the same experience works on both mobile and web.",
+      "Owned the full product lifecycle, from UI design and feature development to testing and release preparation.",
     ],
   },
   {
@@ -54,9 +57,15 @@ export const experience: Experience[] = [
     address: "25 Atwater Ave, West Brookfield, MA 01585",
     platforms: ["Next.js", "MongoDB", "OpenAI", "Stripe", "Supabase", "Claude", "LangChain", "MCP"],
     points: [
-      "SermonAI 3.0: Next.js, MongoDB, OpenAI, Stripe billing.",
-      "SermonAI 4.0: re-architected with Next.js, Supabase, Claude.",
-      "RAG pipelines, LangChain agents, MCP-based tool stack.",
+      "Led the core AI engineering behind SermonAI, a platform for AI-driven sermon preparation and content automation.",
+      "SermonAI 3.0: Built with Next.js, MongoDB, and OpenAI, hosted on Plesk. Integrated the Stripe API for billing and subscriptions.",
+      "SermonAI 4.0: Refactored 3.0 into a new architecture using Next.js, Supabase, and Claude.",
+      "Designed LLM architectures using RAG pipelines, domain-specific fine-tuning of open-source models, and multi-step agent orchestration with LangChain.",
+      "Shipped AI features such as predictive insights, automated planning, and generative summaries across a full-stack application (Python/FastAPI backend, Next.js frontend).",
+      "Architected cloud-native, multi-tenant systems on AWS and GCP, with an emphasis on scalability, reliability, and security.",
+      "Built MLOps pipelines and CI/CD workflows with GitHub Actions; enforced data privacy and compliance standards (SOC 2, GDPR).",
+      "Designed an MCP-based tool stack that replaced multiple custom integrations with one protocol-driven interface.",
+      "Tuned conversational design to balance a friendly user experience with strict control over context window, response length, latency, and token cost.",
     ],
   },
   {
@@ -67,9 +76,11 @@ export const experience: Experience[] = [
     address: "200 School Road, Rochedale QLD 4123, Australia",
     platforms: ["Next.js", "AWS", "OpenAI", "New Booking Cloud"],
     points: [
-      "Responsive Next.js front end hosted on AWS.",
-      "OpenAI chatbot guiding visitors to booking.",
-      "Integrated New Booking Cloud and technical SEO.",
+      "Designed and built the Brisbane Gateway front end with Next.js, delivering a clean, mobile-responsive UI that works across phones, tablets, and desktops.",
+      "Deployed and hosted the application on AWS, handling the setup needed for reliable, production-ready releases.",
+      "Implemented an AI chatbot with the OpenAI API to answer visitor questions and guide them toward booking.",
+      "Applied technical SEO practices, including metadata, page structure, and performance improvements, to increase search visibility.",
+      "Integrated the New Booking Cloud system so customers could check availability and complete bookings directly on the site.",
     ],
   },
   {
@@ -80,8 +91,11 @@ export const experience: Experience[] = [
     address: "6399 OH-83, Millersburg, OH 44654",
     platforms: ["Make.com", "Zapier", "Node", "OpenAI"],
     points: [
-      "Implemented the order system using Make.com, Zapier, and a Node Server.",
-      "Implemented the email template build system using OpenAI and Make.com.",
+      "Built automation tools and full-stack web applications at Sprigs Life using Python (Django, Flask) and JavaScript (React, Node.js), creating the foundation for later AI-driven features.",
+      "Implemented the order system using Make.com, Zapier, and a Node.js server, automating how orders are captured and processed.",
+      "Implemented an email template build system using OpenAI and Make.com, generating ready-to-send email content automatically.",
+      "Developed RESTful APIs and server-side services for web and mobile platforms, with responsive React interfaces and tuned PostgreSQL and MongoDB databases behind them.",
+      "Integrated third-party APIs and cloud services, and deployed applications on AWS using Git, Docker, and CI/CD pipelines.",
     ],
   },
   {
@@ -92,8 +106,9 @@ export const experience: Experience[] = [
     address: "8635 W Sahara Ave, Ste 3129, Las Vegas, NV 89117",
     platforms: ["WebRTC", "Twilio", "Deepgram"],
     points: [
-      "Voice AI workflows: orchestration, telephony, call routing, human handoff.",
-      "Real-time voice with WebRTC, Twilio, Deepgram STT/TTS.",
+      "Built voice AI workflows for real-time call handling: agent orchestration, telephony integration, call routing, and human handoff.",
+      "Developed real-time voice systems using WebRTC, Twilio, and Deepgram, including streaming audio, STT/TTS pipelines, and interruption handling.",
+      "Kept production calls low-latency and reliable through monitoring, retries, and graceful handoff to human agents.",
     ],
   },
   {
@@ -104,8 +119,10 @@ export const experience: Experience[] = [
     address: "28 West 23rd Street, Floor 2, New York, NY 10010",
     platforms: ["Python", "FastAPI", "Node", "AWS", "OpenAI", "Claude"],
     points: [
-      "Led backend for production AI systems (Python, FastAPI, Node, AWS).",
-      "LLM apps with RAG, vector search, OpenAI & Claude.",
+      "Led backend engineering for production AI systems using Python, FastAPI, Node.js, TypeScript, PostgreSQL, Redis, and AWS, including APIs, distributed services, and data pipelines.",
+      "Built LLM-powered applications, including RAG pipelines, vector search, and AI agents integrated with OpenAI and Anthropic/Claude.",
+      "Owned architecture and delivery for model-driven systems connected to real application data, tools, and business processes.",
+      "Supported production infrastructure with Docker, Kubernetes, CI/CD, observability, security, and incident response on AWS.",
     ],
   },
   {
@@ -115,7 +132,11 @@ export const experience: Experience[] = [
     period: "09/2018 – 04/2020",
     address: "One Market Street, Spear Tower, Suite 1000, San Francisco, CA 94105",
     platforms: ["HIPAA", "SOC 2"],
-    points: ["HIPAA / SOC 2 compliant healthcare AI workflows."],
+    points: [
+      "Built healthcare-focused AI workflows prioritizing reliability, privacy, and secure data handling.",
+      "Designed permissioned workflows, secure API integrations, and controlled data access in environments requiring HIPAA, SOC 2, and privacy-conscious architecture.",
+      "Built and maintained production AI systems handling sensitive patient data, with a focus on compliance and secure infrastructure.",
+    ],
   },
 ];
 

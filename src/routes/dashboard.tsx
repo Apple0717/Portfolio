@@ -1,8 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useLayoutEffect } from "react";
 import { Reveal } from "@/components/reveal";
+import { StockBoard } from "@/components/stock-charts";
 import { useAuth } from "@/lib/auth";
-import { portfolio, profile, skills, trend } from "@/lib/portfolio-data";
+import { useTheme } from "@/lib/theme";
+import { portfolio, profile, skills } from "@/lib/portfolio-data";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -14,58 +17,16 @@ export const Route = createFileRoute("/dashboard")({
   component: DashboardPage,
 });
 
-function TrendChart() {
-  const w = 520;
-  const h = 200;
-  const pad = 24;
-  const x = (i: number) => pad + (i * (w - pad * 2)) / (trend.length - 1);
-  const y = (v: number) => h - pad - (v / 100) * (h - pad * 2);
-  const line = (key: "ai" | "voice" | "web") => trend.map((point, i) => `${i ? "L" : "M"}${x(i)},${y(point[key])}`).join(" ");
-  const series = [
-    ["ai", "var(--chart-1)", "AI / LLM"],
-    ["voice", "var(--chart-2)", "Voice AI"],
-    ["web", "var(--chart-3)", "Full-stack"],
-  ] as const;
-
-  return (
-    <div>
-      <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
-        {[0, 25, 50, 75, 100].map((value) => (
-          <line key={value} x1={pad} x2={w - pad} y1={y(value)} y2={y(value)} stroke="oklch(0.78 0.04 230 / 0.28)" />
-        ))}
-        {series.map(([key, color], index) => (
-          <path
-            key={key}
-            d={line(key)}
-            fill="none"
-            stroke={color}
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            className="draw-line"
-            style={{ animationDelay: `${index * 180}ms` }}
-          />
-        ))}
-        {trend.map((point, i) => (
-          <text key={point.year} x={x(i)} y={h - 4} textAnchor="middle" fontSize="10" fill="oklch(0.8 0.03 90)">
-            {point.year}
-          </text>
-        ))}
-      </svg>
-      <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
-        {series.map(([key, color, label]) => (
-          <span key={key} className="flex items-center gap-2">
-            <span className="h-2 w-4 rounded-full" style={{ background: color }} />
-            {label}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function DashboardPage() {
   const { user, ready } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const dark = theme === "dark";
   const navigate = useNavigate();
+
+  useLayoutEffect(() => {
+    document.body.classList.add("is-dashboard");
+    return () => document.body.classList.remove("is-dashboard");
+  }, []);
 
   useEffect(() => {
     if (ready && !user) navigate({ to: "/login" });
@@ -80,10 +41,26 @@ function DashboardPage() {
   }
 
   return (
+    <div className="dashboard-light">
     <div className="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
       <Reveal>
-        <p className="text-xs uppercase tracking-[0.32em] text-primary">Private studio</p>
-        <h1 className="mt-3 font-display text-5xl md:text-6xl">Welcome back, {user.name.split(" ")[0]}.</h1>
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex items-center gap-5">
+            <img
+              src="/avatar.png"
+              alt={profile.name}
+              className="avatar-ring h-20 w-20 rounded-full object-cover"
+            />
+            <div>
+              <p className="text-xs uppercase tracking-[0.32em] text-primary">Private studio</p>
+              <h1 className="mt-2 font-display text-5xl md:text-6xl">Welcome back, {user.name.split(" ")[0]}.</h1>
+            </div>
+          </div>
+          <button type="button" onClick={toggleTheme} className="theme-toggle" aria-pressed={dark}>
+            {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            {dark ? "Light" : "Dark"}
+          </button>
+        </div>
         <p className="mt-4 max-w-2xl text-muted-foreground">
           Signed in as {user.email}. This room holds the longer view of {profile.name}&apos;s practice — where the energy has gone, and what it produced.
         </p>
@@ -103,15 +80,10 @@ function DashboardPage() {
         ))}
       </section>
 
+      <StockBoard />
+
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Reveal className="lux-panel p-6 lg:col-span-2">
-          <h2 className="font-display text-3xl">Focus trend</h2>
-          <p className="text-sm text-muted-foreground">Where the practice has leaned, year by year.</p>
-          <div className="mt-4">
-            <TrendChart />
-          </div>
-        </Reveal>
-        <Reveal delay={120} className="lux-panel p-6">
+        <Reveal delay={120} className="lux-panel p-6 lg:col-span-3">
           <h2 className="font-display text-3xl">Core strengths</h2>
           <div className="mt-5 space-y-4">
             {skills.map(([label, value], index) => (
@@ -120,7 +92,7 @@ function DashboardPage() {
                   <span>{label}</span>
                   <span className="text-primary">{value}%</span>
                 </div>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[oklch(1_0_0/0.08)]">
+                <div className="skill-track mt-2 h-1.5 overflow-hidden rounded-full">
                   <div
                     className="skill-bar h-1.5 rounded-full bg-gradient-to-r from-glow to-warm"
                     style={{ width: `${value}%`, animationDelay: `${200 + index * 100}ms` }}
@@ -182,6 +154,7 @@ function DashboardPage() {
           </Reveal>
         </div>
       </section>
+    </div>
     </div>
   );
 }

@@ -15,6 +15,12 @@ type AuthContextValue = {
 const USERS_KEY = "wlt.users";
 const SESSION_KEY = "wlt.session";
 
+export const studioAccount = {
+  name: "William L. Todd",
+  email: "appleseed20240717@gmail.com",
+  password: "admin2026",
+};
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 function readUsers(): StoredUser[] {
@@ -33,6 +39,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
+      const users = readUsers().filter((entry) => entry.email !== studioAccount.email);
+      users.push({ ...studioAccount });
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+
       const raw = localStorage.getItem(SESSION_KEY);
       if (raw) {
         const session = JSON.parse(raw) as SessionUser;
