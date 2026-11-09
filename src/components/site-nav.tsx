@@ -25,6 +25,9 @@ export function SiteNav() {
           <Link to="/" hash="intro" activeOptions={{ exact: true, includeHash: true }} className="nav-link">
             Introduction
           </Link>
+          <Link to="/" hash="portfolio" activeOptions={{ exact: true, includeHash: true }} className="nav-link">
+            Portfolio
+          </Link>
           <Link to="/" hash="experience" activeOptions={{ exact: true, includeHash: true }} className="nav-link">
             Experience
           </Link>
@@ -70,6 +73,9 @@ export function SiteNav() {
           <div className="flex flex-col gap-1">
             <Link to="/" hash="intro" activeOptions={{ exact: true, includeHash: true }} className="nav-link w-fit py-2">
               Introduction
+            </Link>
+            <Link to="/" hash="portfolio" activeOptions={{ exact: true, includeHash: true }} className="nav-link w-fit py-2">
+              Portfolio
             </Link>
             <Link to="/" hash="experience" activeOptions={{ exact: true, includeHash: true }} className="nav-link w-fit py-2">
               Experience

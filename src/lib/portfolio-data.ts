@@ -149,6 +149,39 @@ export const portfolio = [
   { name: "School Menu Platform", tag: "Enterprise", stack: "Azure · QuickBooks API" },
 ];
 
+export const showcases = [
+  {
+    name: "SermonAI",
+    line: "One workspace for biblical study, sermon preparation, and ministry.",
+    image: "/portfolio/sermonai.jpg",
+  },
+  {
+    name: "SIMZ",
+    line: "Connected AI workflows for healthcare operations.",
+    image: "/portfolio/simz.jpg",
+  },
+  {
+    name: "Premier Agent Network",
+    line: "A virtual real estate brokerage and business platform.",
+    image: "/portfolio/premier-agent.jpg",
+  },
+  {
+    name: "rTurner Consulting",
+    line: "A GovCon growth platform for finding, qualifying, and winning work.",
+    image: "/portfolio/rturner.jpg",
+  },
+  {
+    name: "Assort Health",
+    line: "An AI-powered patient access and engagement platform.",
+    image: "/portfolio/assort-health.jpg",
+  },
+  {
+    name: "Brisbane Gateway Resort",
+    line: "A stay, groups, and booking site for the resort outside Brisbane.",
+    image: "/portfolio/brisbane-gateway.jpg",
+  },
+];
+
 export const trend = [
   { year: "2018", ai: 20, voice: 5, web: 40 },
   { year: "2020", ai: 45, voice: 10, web: 45 },

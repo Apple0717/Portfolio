@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ContactSection } from "@/components/contact-section";
 import { Reveal } from "@/components/reveal";
 import { SkillWall } from "@/components/skill-wall";
-import { experience, profile } from "@/lib/portfolio-data";
+import { experience, profile, showcases } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -23,6 +23,16 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const lineRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLSpanElement>(null);
+  const [openShowcase, setOpenShowcase] = useState<(typeof showcases)[number] | null>(null);
+
+  useEffect(() => {
+    if (!openShowcase) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenShowcase(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openShowcase]);
 
   useLayoutEffect(() => {
     const line = lineRef.current;
@@ -104,6 +114,45 @@ function HomePage() {
           <SkillWall />
         </Reveal>
       </section>
+
+      <section id="portfolio" className="mx-auto mt-24 max-w-6xl scroll-mt-24 px-5 md:px-8">
+        <Reveal>
+          <p className="text-center text-xs uppercase tracking-[0.32em] text-primary">Portfolio</p>
+          <h2 className="mt-3 text-center font-display text-5xl leading-none md:text-6xl">Platforms I have built</h2>
+        </Reveal>
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          {showcases.map((item, index) => (
+            <Reveal key={item.name} delay={index * 80}>
+              <button
+                type="button"
+                onClick={() => setOpenShowcase(item)}
+                className="lux-panel group block w-full overflow-hidden text-left transition duration-500 hover:-translate-y-1 hover:border-accent"
+              >
+                <img src={item.image} alt="" className="w-full" />
+                <div className="p-5">
+                  <h3 className="font-display text-3xl">{item.name}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.line}</p>
+                </div>
+              </button>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {openShowcase && (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-black/80 p-4 md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label={openShowcase.name}
+          onClick={() => setOpenShowcase(null)}
+        >
+          <figure className="max-h-full max-w-6xl" onClick={(event) => event.stopPropagation()}>
+            <img src={openShowcase.image} alt={openShowcase.name} className="max-h-[82vh] w-full rounded-xl object-contain" />
+            <figcaption className="mt-3 text-center font-display text-2xl text-white">{openShowcase.name}</figcaption>
+          </figure>
+        </div>
+      )}
 
       <section id="experience" className="mx-auto mt-16 max-w-5xl px-5 md:px-8">
         <p className="text-center text-xs uppercase tracking-[0.32em] text-primary">Companies</p>
