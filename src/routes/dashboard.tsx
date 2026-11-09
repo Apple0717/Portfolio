@@ -125,7 +125,7 @@ function DashboardPage() {
             ))}
           </div>
         </div>
-        <div className="space-y-6 lg:col-span-2">
+        <div className="space-y-6 lg:col-span-2 lg:mt-[3.25rem]">
           <Reveal className="lux-panel p-6">
             <h2 className="font-display text-3xl">Education</h2>
             <p className="mt-3 font-display text-2xl">Carrington College</p>

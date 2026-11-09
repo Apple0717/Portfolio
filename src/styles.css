@@ -459,7 +459,7 @@ body::after {
 }
 
 html:has(body.is-dashboard) {
-  background: #ffffff;
+  background: #03101c;
 }
 
 body.is-dashboard {
@@ -472,21 +472,33 @@ body.is-dashboard {
   --card: #ffffff;
 }
 
-body.is-dashboard::before,
+body.is-dashboard::before {
+  background: #03101c url("/starfield.jpg") center / cover no-repeat;
+}
+
 body.is-dashboard::after {
-  background: #ffffff;
+  background: transparent;
   background-image: none;
 }
 
 body.is-dashboard .dashboard-light {
-  background: #ffffff;
-  color: #171717;
+  background: transparent;
+  color: #f4f6f8;
+  --foreground: oklch(0.96 0.02 90);
+  --muted-foreground: oklch(0.82 0.02 250);
+}
+
+body.is-dashboard .dashboard-light .lux-panel,
+body.is-dashboard .dashboard-light .quote-card {
+  --foreground: oklch(0.22 0.03 255);
+  --muted-foreground: oklch(0.42 0.02 255);
 }
 
 body.is-dashboard .dashboard-light .lux-panel {
   background: #ffffff;
   border-color: #e6e8ee;
   box-shadow: 0 10px 30px rgb(15 23 42 / 0.06);
+  color: #171717;
 }
 
 .avatar-ring {
@@ -498,7 +510,7 @@ body.is-dashboard .dashboard-light .lux-panel {
 }
 
 html[data-theme="dark"]:has(body.is-dashboard) {
-  background: #0b0d12;
+  background: #03101c;
 }
 
 html[data-theme="dark"] body.is-dashboard {
@@ -511,15 +523,24 @@ html[data-theme="dark"] body.is-dashboard {
   --card: #141820;
 }
 
-html[data-theme="dark"] body.is-dashboard::before,
+html[data-theme="dark"] body.is-dashboard::before {
+  background: #03101c url("/starfield.jpg") center / cover no-repeat;
+}
+
 html[data-theme="dark"] body.is-dashboard::after {
-  background: #0b0d12;
+  background: transparent;
   background-image: none;
 }
 
 html[data-theme="dark"] body.is-dashboard .dashboard-light {
-  background: #0b0d12;
+  background: transparent;
   color: #f4f6f8;
+}
+
+html[data-theme="dark"] body.is-dashboard .dashboard-light .lux-panel,
+html[data-theme="dark"] body.is-dashboard .dashboard-light .quote-card {
+  --foreground: oklch(0.96 0.02 90);
+  --muted-foreground: oklch(0.78 0.02 250);
 }
 
 html[data-theme="dark"] body.is-dashboard .dashboard-light .lux-panel {
