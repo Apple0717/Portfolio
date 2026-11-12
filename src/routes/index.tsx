@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ContactSection } from "@/components/contact-section";
 import { Reveal } from "@/components/reveal";
 import { SkillWall } from "@/components/skill-wall";
-import { experience, profile, showcases } from "@/lib/portfolio-data";
+import { experience, profile, showcases, skillSets } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -23,6 +23,8 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const lineRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLSpanElement>(null);
+  const skillsRef = useRef<HTMLElement>(null);
+  const [skillStep, setSkillStep] = useState(0);
   const [openShowcase, setOpenShowcase] = useState<(typeof showcases)[number] | null>(null);
 
   useEffect(() => {
@@ -72,13 +74,28 @@ function HomePage() {
       if (frame) return;
       frame = window.requestAnimationFrame(place);
     };
+    const placeSkills = () => {
+      const skills = skillsRef.current;
+      if (!skills) return;
+      const box = skills.getBoundingClientRect();
+      const travel = skills.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-box.top, 0), Math.max(travel, 0));
+      const progress = travel <= 0 ? 0 : scrolled / travel;
+      const next = progress >= 1 ? skillSets.length - 1 : Math.min(skillSets.length - 1, Math.floor(progress * skillSets.length));
+      setSkillStep((current) => (current === next ? current : next));
+    };
+    const onScrollAll = () => {
+      onScroll();
+      placeSkills();
+    };
     place();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    placeSkills();
+    window.addEventListener("scroll", onScrollAll, { passive: true });
+    window.addEventListener("resize", onScrollAll);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", onScrollAll);
+      window.removeEventListener("resize", onScrollAll);
     };
   }, []);
 
@@ -103,39 +120,62 @@ function HomePage() {
         </Reveal>
       </section>
 
-      <section id="skills" className="mx-auto mt-40 max-w-5xl px-5 md:mt-56 md:px-8">
-        <Reveal>
-          <h2 className="font-display text-5xl leading-none md:text-6xl">What I do</h2>
-          <p className="mt-4 max-w-xl text-sm uppercase leading-relaxed tracking-[0.18em] text-muted-foreground">
-            AI and voice software engineer who builds production systems across the stack
-          </p>
-        </Reveal>
-        <Reveal delay={120}>
-          <SkillWall />
-        </Reveal>
+      <section
+        id="skills"
+        ref={skillsRef}
+        className="skill-scroll mt-40 md:mt-56"
+        style={{ height: `${skillSets.length * 42 + 88}vh` }}
+      >
+        <div className="skill-sticky">
+          <div className="mx-auto max-w-6xl px-5 md:px-8">
+            <Reveal>
+              <h2 className="font-display text-5xl leading-none md:text-6xl">What I do</h2>
+              <p className="mt-4 max-w-xl text-sm uppercase leading-relaxed tracking-[0.18em] text-muted-foreground">
+                AI and voice software engineer who builds production systems across the stack
+              </p>
+            </Reveal>
+            <SkillWall
+              active={skillStep}
+              onSelect={(index) => {
+                const skills = skillsRef.current;
+                if (!skills) return;
+                const travel = skills.offsetHeight - window.innerHeight;
+                const top = skills.getBoundingClientRect().top + window.scrollY + (travel * (index + 0.45)) / skillSets.length;
+                window.scrollTo({ top, behavior: "smooth" });
+              }}
+            />
+          </div>
+        </div>
       </section>
 
-      <section id="portfolio" className="mx-auto mt-24 max-w-6xl scroll-mt-24 px-5 md:px-8">
-        <Reveal>
-          <p className="text-center text-xs uppercase tracking-[0.32em] text-primary">Portfolio</p>
-          <h2 className="mt-3 text-center font-display text-5xl leading-none md:text-6xl">Platforms I have built</h2>
-        </Reveal>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {showcases.map((item, index) => (
-            <Reveal key={item.name} delay={index * 80}>
-              <button
-                type="button"
-                onClick={() => setOpenShowcase(item)}
-                className="lux-panel group block w-full overflow-hidden text-left transition duration-500 hover:-translate-y-1 hover:border-accent"
-              >
-                <img src={item.image} alt="" className="w-full" />
-                <div className="p-5">
-                  <h3 className="font-display text-3xl">{item.name}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.line}</p>
-                </div>
-              </button>
-            </Reveal>
-          ))}
+      <section id="portfolio" className="mt-24 scroll-mt-24">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <Reveal>
+            <p className="text-center text-xs uppercase tracking-[0.32em] text-primary">Portfolio</p>
+          </Reveal>
+        </div>
+        <div className="portfolio-rail mt-12 pb-2">
+          <div className="portfolio-track">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="portfolio-set" aria-hidden={copy === 1 || undefined}>
+                {showcases.map((item) => (
+                  <button
+                    key={`${copy}-${item.name}`}
+                    type="button"
+                    tabIndex={copy === 1 ? -1 : undefined}
+                    onClick={() => setOpenShowcase(item)}
+                    className="portfolio-card lux-panel group block overflow-hidden text-left transition duration-500 hover:-translate-y-1 hover:border-accent"
+                  >
+                    <img src={item.image} alt="" className="w-full" />
+                    <div className="p-5">
+                      <h3 className="font-display text-2xl">{item.name}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground">{item.line}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

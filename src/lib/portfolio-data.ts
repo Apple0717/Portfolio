@@ -180,6 +180,11 @@ export const showcases = [
     line: "A stay, groups, and booking site for the resort outside Brisbane.",
     image: "/portfolio/brisbane-gateway.jpg",
   },
+  {
+    name: "Open Football Simulator",
+    line: "A football management simulator written in Rust, inspired by Football Manager.",
+    image: "/portfolio/open-football.jpg",
+  },
 ];
 
 export const trend = [
